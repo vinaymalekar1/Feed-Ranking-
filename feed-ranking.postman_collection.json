@@ -1,0 +1,180 @@
+{
+  "info": {
+    "name": "feed-ranking",
+    "description": "Endpoints for the feed-ranking Spring Boot demo: seeding, users, posts, follows, naive feed, ranked feed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "userId", "value": "1" },
+    { "key": "followerId", "value": "1" },
+    { "key": "followingId", "value": "2" },
+    { "key": "followId", "value": "1" },
+    { "key": "postId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Seed",
+      "item": [
+        {
+          "name": "Seed fake data",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/seed?users=5000&posts=50000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "seed"],
+              "query": [
+                { "key": "users", "value": "5000" },
+                { "key": "posts", "value": "50000" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"jdoe\",\n  \"email\": \"jdoe@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Create post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/posts", "host": ["{{baseUrl}}"], "path": ["api", "posts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": {{userId}},\n  \"content\": \"Hello world, this is my first post!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get post by id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["api", "posts", "{{postId}}"] }
+          }
+        },
+        {
+          "name": "List posts",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/posts", "host": ["{{baseUrl}}"], "path": ["api", "posts"] }
+          }
+        },
+        {
+          "name": "Delete post",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["api", "posts", "{{postId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Follows",
+      "item": [
+        {
+          "name": "Follow a user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/follows", "host": ["{{baseUrl}}"], "path": ["api", "follows"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"followerId\": {{followerId}},\n  \"followingId\": {{followingId}}\n}"
+            }
+          }
+        },
+        {
+          "name": "Get following list",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/follows/{{userId}}/following", "host": ["{{baseUrl}}"], "path": ["api", "follows", "{{userId}}", "following"] }
+          }
+        },
+        {
+          "name": "Get followers list",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/follows/{{userId}}/followers", "host": ["{{baseUrl}}"], "path": ["api", "follows", "{{userId}}", "followers"] }
+          }
+        },
+        {
+          "name": "Unfollow",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/follows/{{followId}}", "host": ["{{baseUrl}}"], "path": ["api", "follows", "{{followId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Naive feed",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed/{{userId}}/naive?limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed", "{{userId}}", "naive"],
+              "query": [{ "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Ranked feed",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed/{{userId}}?limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed", "{{userId}}"],
+              "query": [{ "key": "limit", "value": "20" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
